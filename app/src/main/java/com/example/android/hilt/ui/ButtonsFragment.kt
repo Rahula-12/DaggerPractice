@@ -23,43 +23,57 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.example.android.hilt.LogApplication
 import com.example.android.hilt.R
 import com.example.android.hilt.data.LoggerLocalDataSource
+import com.example.android.hilt.di.ActivityComponent
+import com.example.android.hilt.di.DaggerActivityComponent
 import com.example.android.hilt.navigator.AppNavigator
 import com.example.android.hilt.navigator.Screens
+import javax.inject.Inject
 
 /**
  * Fragment that displays buttons whose interactions are recorded.
  */
 class ButtonsFragment : Fragment() {
 
-    private lateinit var logger: LoggerLocalDataSource
-    private lateinit var navigator: AppNavigator
+    @Inject
+    lateinit var logger: LoggerLocalDataSource
+
+    @Inject
+    lateinit var navigator: AppNavigator
+
+    private lateinit var component: ActivityComponent
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        component= DaggerActivityComponent.builder().provideApplicationContext(this.requireActivity().application).provideActivityContext(this.requireActivity()).build()
+        component.inject(this)
         return inflater.inflate(R.layout.fragment_buttons, container, false)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
+//        component= DaggerActivityComponent.builder().provideApplicationContext(this.requireActivity().application).provideActivityContext(this.requireActivity()).build()
+//        component.inject(this)
         populateFields(context)
     }
 
     private fun populateFields(context: Context) {
-        logger = (context.applicationContext as LogApplication).
-            serviceLocator.loggerLocalDataSource
-
-        navigator = (context.applicationContext as LogApplication).
-            serviceLocator.provideNavigator(requireActivity())
+//        component= DaggerActivityComponent.builder().provideApplicationContext(this.requireActivity().application).provideActivityContext(this.requireActivity()).build()
+//        component.inject(this)
+//        logger = (context.applicationContext as LogApplication).
+//            serviceLocator.loggerLocalDataSource
+//
+//        navigator = (context.applicationContext as LogApplication).
+//            serviceLocator.provideNavigator(requireActivity())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        component= DaggerActivityComponent.builder().provideApplicationContext(this.requireActivity().application).provideActivityContext(this.requireActivity()).build()
+//        component.inject(this)
         view.findViewById<Button>(R.id.button1).setOnClickListener {
             logger.addLog("Interaction with 'Button 1'")
         }

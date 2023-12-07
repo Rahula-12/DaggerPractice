@@ -29,23 +29,32 @@ import com.example.android.hilt.LogApplication
 import com.example.android.hilt.R
 import com.example.android.hilt.data.Log
 import com.example.android.hilt.data.LoggerLocalDataSource
+import com.example.android.hilt.di.ActivityComponent
+import com.example.android.hilt.di.DaggerActivityComponent
 import com.example.android.hilt.util.DateFormatter
+import javax.inject.Inject
 
 /**
  * Fragment that displays the database logs.
  */
 class LogsFragment : Fragment() {
 
-    private lateinit var logger: LoggerLocalDataSource
-    private lateinit var dateFormatter: DateFormatter
+    @Inject
+    lateinit var logger: LoggerLocalDataSource
+
+    @Inject
+    lateinit var dateFormatter: DateFormatter
 
     private lateinit var recyclerView: RecyclerView
 
+    private lateinit var component: ActivityComponent
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        component= DaggerActivityComponent.builder().provideActivityContext(this.requireActivity()).provideApplicationContext(this.requireActivity().application).build()
+        component.inject(this)
         return inflater.inflate(R.layout.fragment_logs, container, false)
     }
 
@@ -62,9 +71,7 @@ class LogsFragment : Fragment() {
     }
 
     private fun populateFields(context: Context) {
-        logger = (context.applicationContext as LogApplication).serviceLocator.loggerLocalDataSource
-        dateFormatter =
-            (context.applicationContext as LogApplication).serviceLocator.provideDateFormatter()
+
     }
 
     override fun onResume() {
