@@ -26,9 +26,10 @@ class LogDatabaseModule {
     @Provides
     fun providesDao(appDatabase: AppDatabase)= appDatabase.logDao()
 
+    @Singleton
     @Provides
     fun provideNavigator(activityContext: FragmentActivity): AppNavigator {
-        return AppNavigatorImpl(activityContext as FragmentActivity)
+        return AppNavigatorImpl(activityContext)
     }
 
 }
