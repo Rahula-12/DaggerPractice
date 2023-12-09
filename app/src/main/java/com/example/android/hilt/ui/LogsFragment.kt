@@ -53,7 +53,8 @@ class LogsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        component= DaggerActivityComponent.builder().provideActivityContext(this.requireActivity()).provideApplicationContext(this.requireActivity().application).build()
+       // component= DaggerActivityComponent.builder().provideActivityContext(this.requireActivity()).provideApplicationContext(this.requireActivity().application).build()
+        component=(this.requireActivity() as MainActivity).component
         component.inject(this)
         return inflater.inflate(R.layout.fragment_logs, container, false)
     }

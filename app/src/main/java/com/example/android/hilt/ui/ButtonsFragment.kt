@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.android.hilt.R
+import com.example.android.hilt.data.Log
 import com.example.android.hilt.data.LoggerLocalDataSource
 import com.example.android.hilt.di.ActivityComponent
 import com.example.android.hilt.di.DaggerActivityComponent
@@ -49,8 +50,10 @@ class ButtonsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        component= DaggerActivityComponent.builder().provideApplicationContext(this.requireActivity().application).provideActivityContext(this.requireActivity()).build()
+        //component= DaggerActivityComponent.builder().provideApplicationContext(this.requireActivity().application).provideActivityContext(this.requireActivity()).build()
+        component=(this.requireActivity() as MainActivity).component
         component.inject(this)
+        android.util.Log.d("FragmentButton",((this.requireActivity() as MainActivity).navigator==this.navigator).toString())
         return inflater.inflate(R.layout.fragment_buttons, container, false)
     }
 
